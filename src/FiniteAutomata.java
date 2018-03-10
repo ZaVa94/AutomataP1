@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -36,7 +37,26 @@ public class FiniteAutomata {
     }
 
     public void addRule(String ruleString) {
-        
+        List<String> splitString = Arrays.asList(ruleString.split(","));
+        Integer currentState = Integer.parseInt(splitString.get(0));
+        Integer transition = (int)(splitString.get(1).charAt(0));
+        Integer nextState = Integer.parseInt(splitString.get(2));
+        TransitionContainer retrievedRuleSet = machineRules.get(currentState);
+        if (retrievedRuleSet == null)
+        {
+            retrievedRuleSet = new TransitionContainer();
+        }
+        List<Integer> retrievedTransitionStates = retrievedRuleSet.get(transition);
+        if (retrievedTransitionStates == null)
+        {
+            retrievedTransitionStates = new ArrayList<>();
+        }
+        retrievedTransitionStates.add(nextState);
+
+        if (currentState < 0 || currentState > 255 || transition < 0 || transition > 255 || nextState < 0 || nextState > 255)
+        {
+            isValid = false;
+        }
     }
 
     private enum Type {

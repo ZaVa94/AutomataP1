@@ -31,13 +31,13 @@ public class MainReader {
                 {
                     String stateString = scanner.next();
                     finiteAutomata.setAcceptStates(stateString);
-                    lineNumber++;
                 }
                 else
                 {
                     String ruleString = scanner.next();
                     finiteAutomata.addRule(ruleString);
                 }
+                lineNumber++;
             }
         } catch (FileNotFoundException e) {
             System.out.println("Couldn't scan file.");
