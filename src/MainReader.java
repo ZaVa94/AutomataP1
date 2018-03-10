@@ -12,6 +12,7 @@ public class MainReader {
         int numFiles = 0;
         File machineDir = Paths.get(args[0]).toFile();
         File inputFile = Paths.get(args[1]).toFile();
+        int numberOfInputStrings = 0;
         for (File machineFile : machineDir.listFiles())
         {
             FiniteAutomata automata = buildMachine(machineFile);
@@ -22,6 +23,7 @@ public class MainReader {
                     while (scanner.hasNext())
                     {
                         automata.runString(scanner.next());
+                        numberOfInputStrings += 1;
                     }
                     scanner.close();
                 } catch (FileNotFoundException e) {
@@ -39,7 +41,15 @@ public class MainReader {
                 e.printStackTrace();
             }
             File descriptionFile = new File("./Logs/" + automata.getBaseName() + ".log");
-
+            automata.compileStates();
+            try {
+                BufferedWriter writer = new BufferedWriter(new FileWriter(descriptionFile));
+                writer.write("Valid: " + automata.getMachineType());
+                writer.write("States: " + automata.getNumberOfStates());
+                writer.write("Accepted Strings: " + automata.getAcceptedStrings().size()+ "/" + numberOfInputStrings);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

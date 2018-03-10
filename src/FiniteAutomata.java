@@ -14,6 +14,8 @@ public class FiniteAutomata {
 
     private Type machineType = Type.DFA;
 
+    private int numberOfStates = 0;
+
     private int startState = 0;
 
     private List<String> acceptedStrings = new ArrayList<>();
@@ -190,6 +192,21 @@ public class FiniteAutomata {
     private void setStartState(int state)
     {
         startState = state;
+    }
+
+    void compileStates()
+    {
+        for (Object o : machineRules.entrySet()) {
+            Map.Entry pair = (Map.Entry) o;
+            if (pair.getValue() != null) {
+                numberOfStates += 1;
+            }
+        }
+    }
+
+    int getNumberOfStates()
+    {
+        return this.numberOfStates;
     }
 
     boolean isValid(){return isValid;}
