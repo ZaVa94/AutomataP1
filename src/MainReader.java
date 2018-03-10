@@ -1,8 +1,5 @@
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -11,16 +8,57 @@ import java.util.Scanner;
 public class MainReader {
     public static void main(String[] args)
     {
+        initDirs();
         int numFiles = 0;
         File machineDir = Paths.get(args[0]).toFile();
+        File inputFile = Paths.get(args[1]).toFile();
         for (File machineFile : machineDir.listFiles())
         {
             FiniteAutomata automata = buildMachine(machineFile);
+            if (automata.isValid())
+            {
+                try {
+                    Scanner scanner = new Scanner(inputFile);
+                    while (scanner.hasNext())
+                    {
+                        automata.runString(scanner.next());
+                    }
+                    scanner.close();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+            File outputFile = new File("./Outputs/" + automata.getBaseName() + ".txt");
+            try {
+                BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile));
+                for (String acceptedString : automata.getAcceptedStrings())
+                {
+                    writer.write(acceptedString);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            File descriptionFile = new File("./Logs/" + automata.getBaseName() + ".log");
+
+        }
+    }
+
+    private static void initDirs() {
+        if (Paths.get("./Logs").toFile() == null)
+        {
+            boolean logFileCreated = new File("./Logs").mkdir();
+            System.out.println(logFileCreated);
+        }
+        if (Paths.get("./Outputs").toFile() == null)
+        {
+            boolean outputFileCreated = new File("./Outputs").mkdir();
+            System.out.println(outputFileCreated);
         }
     }
 
     private static FiniteAutomata buildMachine(File machineFile) {
         FiniteAutomata finiteAutomata = new FiniteAutomata();
+        finiteAutomata.setBaseName(machineFile.getName());
         int lineNumber = 0;
 
         try {
@@ -30,7 +68,7 @@ public class MainReader {
                 if (lineNumber == 0)
                 {
                     String stateString = scanner.next();
-                    finiteAutomata.setAcceptStates(stateString);
+                    finiteAutomata.setAcceptStatesFromString(stateString);
                 }
                 else
                 {
@@ -39,6 +77,7 @@ public class MainReader {
                 }
                 lineNumber++;
             }
+            scanner.close();
         } catch (FileNotFoundException e) {
             System.out.println("Couldn't scan file.");
         }
