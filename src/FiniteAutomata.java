@@ -204,6 +204,27 @@ public class FiniteAutomata {
         }
     }
 
+    String getAlphabet()
+    {
+        List<Integer> alphabetList = new ArrayList<>();
+        for (Object o : machineRules.entrySet()) {
+            Map.Entry pair = (Map.Entry) o;
+            if (pair.getValue() != null) {
+                TransitionContainer value = (TransitionContainer) pair.getValue();
+                Set<Integer> keys = value.keySet();
+                alphabetList.add(value.keySet())
+            }
+        }
+    }
+
+    private void addItemsToList(List<Integer> alphabetList, Set<Integer> keys)
+    {
+        for (Integer key : keys)
+        {
+
+        }
+    }
+
     int getNumberOfStates()
     {
         return this.numberOfStates;
