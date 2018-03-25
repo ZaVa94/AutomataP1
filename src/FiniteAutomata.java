@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by Zach on 3/8/2018.
@@ -212,16 +213,21 @@ public class FiniteAutomata {
             if (pair.getValue() != null) {
                 TransitionContainer value = (TransitionContainer) pair.getValue();
                 Set<Integer> keys = value.keySet();
-                alphabetList.add(value.keySet())
+                addItemsToList(alphabetList, keys);
             }
         }
+        Collections.sort(alphabetList);
+        return String.join("", (List)alphabetList);
     }
 
     private void addItemsToList(List<Integer> alphabetList, Set<Integer> keys)
     {
         for (Integer key : keys)
         {
-
+            if (key != 96 && !alphabetList.contains(key))
+            {
+                alphabetList.add(key);
+            }
         }
     }
 

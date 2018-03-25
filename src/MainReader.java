@@ -46,6 +46,7 @@ public class MainReader {
                 BufferedWriter writer = new BufferedWriter(new FileWriter(descriptionFile));
                 writer.write("Valid: " + automata.getMachineType());
                 writer.write("States: " + automata.getNumberOfStates());
+                writer.write("Alphabet: " + automata.getAlphabet());
                 writer.write("Accepted Strings: " + automata.getAcceptedStrings().size()+ "/" + numberOfInputStrings);
             } catch (IOException e) {
                 e.printStackTrace();
